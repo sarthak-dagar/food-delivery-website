@@ -72,26 +72,10 @@ img{
     text-align: center;
 }
 
-/* SECTION 01 */
-
-h5{
-    font-size: 1.2rem;
-    letter-spacing: 0.2rem;
-    color: var(--gold-finger);
-    text-transform: uppercase;
+.mt-4{
+    margin-top: 4rem;
 }
 
-h2{
-    font-size:3.7rem;
-    text-transform: capitalize;
-    color: var(--lead);
-}
-
-h3{
-    font-size: 2rem;
-    text-transform: capitalize;
-    color: var(--lead);
-}
 
 
 
@@ -164,7 +148,8 @@ h3{
 }
 
 .content,
-.image-container{
+.image-container,
+.service-card{
     flex: 1;
     flex-basis: 300px;
 }
@@ -206,6 +191,58 @@ p{
     background: var(--lead);
     color: var(--pure-white);
 }
+
+/* SECTION 01 */
+
+h5{
+    font-size: 1.2rem;
+    letter-spacing: 0.2rem;
+    color: var(--gold-finger);
+    text-transform: uppercase;
+}
+
+h2{
+    font-size:3.7rem;
+    text-transform: capitalize;
+    color: var(--lead);
+}
+
+h3{
+    font-size: 2rem;
+    text-transform: capitalize;
+    color: var(--lead);
+}
+
+.service-card h3{
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+
+/* SECTION 02 */
+
+.order-card{
+    flex: 1;
+    flex-basis: 300px;
+    background: var(--pure-white);
+    padding: 0 1rem 2 rem 1rem;
+    border: .1rem solid var(--gold-finger);
+        border-radius: 2rem;
+        box-shadow: 
+        rgba(0, 0, 0, 0.05) 8px 8px 8px,
+        rgba(0, 0, 0, 0.05) 8px 8px 8px inset;
+        transition: all 0.5s ease-in-out;
+}
+
+.order-card img{
+    width: 15rem;
+}
+
+h4{
+    font-size: 1.8rem;
+    color: var(--lead);
+}
+
 
 
 
@@ -303,6 +340,8 @@ p{
 
     /* SECTION STYLING  */
 
+    /* HERO STYLING */
+
     h1{
         font-size: 3.6rem;
     }
@@ -317,6 +356,12 @@ p{
 
     .gap-4{
         gap: 4rem;
+    }
+
+    /* SECTION 01 */
+
+    H2{
+        font-size: 3rem;
     }
 
 
