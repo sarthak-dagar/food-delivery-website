@@ -296,6 +296,25 @@ h4 {
 }
 
 
+/* SECTION 04 */
+
+.app-container{
+    background: var(--hint-yellow);
+    padding: 3rem 6rem;
+    border-radius: 3rem;
+}
+
+.app-container .content h2{
+    font-size: 4.5rem;
+}
+
+
+
+.app-container .image-container img{
+    width: 25rem;
+}
+
+
 
 
 
@@ -412,9 +431,24 @@ h4 {
 
     /* SECTION 01 */
 
-    H2 {
+    h2 {
         font-size: 3rem;
     }
+
+    /* SECTION 04 */
+
+    .app-container{
+        padding: 2.2rem;
+    }
+
+    .app-container .content h2{
+        font-size: 3.5rem;
+    }
+
+
+
+
+
 
 
 
