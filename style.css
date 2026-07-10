@@ -80,6 +80,14 @@ img {
     margin-top: 0.5rem;
 }
 
+.m-auto{
+    margin: auto;
+}
+
+.mt-one-half{
+    margin-top: 1.5rem;
+}
+
 
 
 
@@ -315,6 +323,33 @@ h4 {
 }
 
 
+/* SECTION 05 */
+
+.image-container{
+    width: 43rem;
+    max-width: 100%;
+    background: var(--pure-white);
+    padding: 0.8rem;
+    box-shadow: 
+    rgba(0, 0, 0, 0.1) 0 5px 8px;
+    border-radius: 1rem;
+    margin: 4rem auto 0 auto;
+}
+
+input[type="email"]{
+    flex: 1;
+    height: 7vh;
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    padding-left: 1rem;
+}
+
+input[type="email"]:focus{
+    outline: none;
+}
+
+
 
 
 
@@ -323,6 +358,33 @@ h4 {
 
 /* FOOTER STYLING */
 
+.footer-container{
+    margin-top: 10rem;
+    padding-block: 4rem;
+    background: var(--hint-yellow);
+}
+
+.footer-wrapper{
+    flex: 1;
+}
+
+.footer-wrapper{
+    background: var(--pure-white);
+}
+
+.footer-wrapper .social-icon:hover{
+    background: var(--lead);
+    color: var(--pure-white);
+}
+    
+.footer-link{
+    color: gray;
+    font-size: 1.1rem;
+}
+
+.footer-link:hover{
+    color: var(--lead);
+}
 
 
 
