@@ -262,6 +262,67 @@ h4 {
     padding: 1.3rem 0 2rem 0;
 }
 
+/* CART TAB STYLING */
+
+.cart-tab{
+    background: var(--hint-yellow);
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: 25rem;
+    padding-block: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart-list{
+    flex: 1;
+    width: 100%;
+}
+
+.total-container{
+    width: 100%;
+    background: var(--gold-finger);
+    text-align: center;
+    margin-block: 1rem;
+    padding-block: 1rem;
+}
+
+.total-container h4{
+    display: inline-block;
+    font-size: 1.3rem;
+    font-weight: 400;
+}
+
+.btn-container .btn{
+    background: var(--lead);
+    transition: 0.3s ease-in-out;
+}
+
+.btn-container .btn:hover{
+    background: var(--gold-finger);
+    color: var(--lead);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* SECTION 03 */
 
 .review-container{
