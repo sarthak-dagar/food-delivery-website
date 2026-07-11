@@ -18,6 +18,19 @@ closeBtn.addEventListener('click', () => cartTab.classList.remove('cart-tab-acti
 let productList = [];
 let cartProduct = [];
 
+const updateTotals = () =>{
+
+    let totalPrice = 0;
+
+    document.querySelectorAll('.item').forEach(item =>{
+
+        const price = parseFloat(item.querySelector('.cart-total').textContent.replace('$',''));
+        
+        totalPrice += price;
+    })
+
+}
+
 const showCards = () => {
 
     productList.forEach(product => {
@@ -84,7 +97,7 @@ const addToCart = (product) => {
     cartList.appendChild(cartItem);
 
     const plusBtn = cartItem.querySelector('.plus');
-    const quantityValue = cartitem.querySelector('.quantity-value');
+    const quantityValue = cartItem.querySelector('.quantity-value');
     const itemTotal = cartItem.querySelector('.item-total');
     const minusBtn = cartItem.querySelector('.minus');
 
@@ -102,6 +115,14 @@ const addToCart = (product) => {
             quantity--;
             quantityValue.textContent = quantity;
             itemTotal.textContent = `$${(price * quantity).toFixed(2)}`;
+        }
+        else {
+            cartItem.classList.add('slide-out');
+
+            setTimeout(() => {
+                cartItem.remove();
+                cartProduct = cartProduct.filter(item => item.id !== product.id);
+            }, 300)
         }
 
     })
