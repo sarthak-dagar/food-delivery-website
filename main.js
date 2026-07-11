@@ -10,15 +10,18 @@ const cartIcon = document.querySelector('.cart-icon');
 const cartTab = document.querySelector('.cart-tab');
 const closeBtn = document.querySelector('.close-btn');
 const cardList = document.querySelector('.card-list');
+const cartList = document.querySelector('.cart-list');
 
 cartIcon.addEventListener('click', ()=> cartTab.classList.add('cart-tab-active'));
 closeBtn.addEventListener('click', ()=> cartTab.classList.remove('cart-tab-active'));
 
 let productList = [];
+let cartProduct = [];
 
 const showCards = () =>{
 
     productList.forEach(product =>{
+
         const orderCard = document.createElement('div');
         orderCard.classList.add('order-card');
 
@@ -26,24 +29,65 @@ const showCards = () =>{
         <div class="card-image">
             <img src="${product.image}">
         </div>
-        <h4>${product.nahe}</h4>
+        <h4>${product.name}</h4>
         <h4 class="price">${product.price}</h4>
-        <a href="#" class="btn cart-btn">Add to Cart</a>
+        <a href="#" class="btn card-btn">Add to Cart</a>
         `;
 
         cardList.appendChild(orderCard);
 
-        const cartBtn = orderCart.querySelector('.cart-btn');
-        PiCarBatteryDuotone.addEventListener('click', (e)=>{
+        const cardBtn = orderCard.querySelector('.card-btn');
+
+        cardBtn.addEventListener('click', (e)=>{
             e.preventDefault();
-            alert('hi')
-        })
-    })
+            addToCart(product);
+        });
+    });
 }
+
+const addToCart = ( product) =>{
+
+    const existingProduct = cartProduct.find(item => item.id === product.id);
+    if(existingProduct){
+
+        alert('Item already in your cart');
+        return;
+    }
+
+    cartProduct.push(product);
+
+    const cartItem =  document.createElement('div');
+    cartItem.classList.add('item');
+
+    cartItem.innerHTML = `
+        <div class="item-image">
+            <img src="${product.image}">
+        </div>
+        <div class="detail">
+          <h4>${product.name}</h4>
+          <h4 class="item-total">${product.price}</h4>
+        </div>
+        <div class="flex">
+          <a href="#" class="quantity-btn">
+             <i class="fa-solid fa-minus"></i>
+          </a>
+          <h4 class="quantity-value">1</h4>
+          <a href="#" class="quantity-btn">
+              <i class="fa-solid fa-plus"></i>
+          </a>
+        </div>
+    `;
+
+    cartList.appendChild(cartItem);
+}
+
+
+
+
 
 const initApp = () =>{
 
-    fetch('product.json').then
+    fetch('products.json').then
     (response => response.json()).then
     (data =>{
 
