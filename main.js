@@ -17,7 +17,7 @@ const hamburger = document.querySelector('.hamburger');
 const mobileMenu = document.querySelector('.mobile-menu');
 const hamburgerIcon = document.querySelector('.hamburger i');
 
-cartIcon.addEventListener('click', () => cartTab.classList.add('cart-tab-active'));
+cartIcon.addEventListener('click', () => cartTab.classList.add('cart-tab-active'));       
 closeBtn.addEventListener('click', () => cartTab.classList.remove('cart-tab-active'));     
 hamburger.addEventListener('click', (e) => {
     e.preventDefault();
