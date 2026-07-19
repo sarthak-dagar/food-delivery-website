@@ -6,7 +6,7 @@ var swiper = new Swiper('.mySwiper', {
     },
 });
 
-const cartIcon = document.querySelector('.cart-icon');
+const cartIcon = document.querySelector('.cart-icon');    
 const cartTab = document.querySelector('.cart-tab');
 const closeBtn = document.querySelector('.close-btn');
 const cardList = document.querySelector('.card-list');
