@@ -154,7 +154,7 @@ const addToCart = (product) => {
 
 const initApp = () => {
 
-    fetch('products.json').then
+    fetch('/api/products').then
         (response => response.json()).then
         (data => {
 
