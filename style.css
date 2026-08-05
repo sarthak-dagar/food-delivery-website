@@ -631,11 +631,94 @@ input[type="email"]:focus{
         font-size: 3.5rem;
     }
 
-
-
-
-
-
-
-
 }
+
+/* MODAL STYLING */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-overlay.modal-active {
+    display: flex;
+}
+
+.modal {
+    background: var(--pure-white);
+    border: 0.1rem solid var(--gold-finger);
+    border-radius: 2rem;
+    padding: 3rem;
+    width: 25rem;
+    max-width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+.modal input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    margin-top: 1rem;
+    border: 0.1rem solid var(--hint-yellow);
+    border-radius: 1rem;
+    font-size: 1.1rem;
+    background: var(--eye-ball);
+}
+
+.modal input:focus {
+    outline: none;
+    border-color: var(--gold-finger);
+}
+
+.modal .btn {
+    width: 100%;
+    margin-top: 1.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    color: var(--lead);
+    cursor: pointer;
+}
+
+.auth-toggle {
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+.auth-toggle a {
+    color: var(--gold-finger);
+    font-weight: bold;
+}
+
+/* ORDERS STYLING */
+.order-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.order-list .order-card {
+    max-width: 300px;
+    padding: 1.5rem;
+}
+
+.order-list .order-card h4 {
+    font-size: 1.3rem;
+}
+
+.order-list .order-card p {
+    font-size: 1rem;
+    margin-block: 0.3rem;
+}
+
