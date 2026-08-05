@@ -19,7 +19,8 @@ exports.getCart = async (req, res) => {
 exports.addToCart = async (req, res) => {
   try {
     const { productId, quantity = 1 } = req.body;
-    const qty = Math.max(1, parseInt(quantity) || 1);
+    const qty = parseInt(quantity) || 1;
+    if (qty === 0) return res.status(400).json({ message: 'Invalid quantity' });
     const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ message: 'Product not found' });
     let cart = await Cart.findOne({ userId: req.userId });
@@ -29,7 +30,11 @@ exports.addToCart = async (req, res) => {
     const existing = cart.items.find(item => item.productId.toString() === productId);
     if (existing) {
       existing.quantity += qty;
+      if (existing.quantity <= 0) {
+        cart.items = cart.items.filter(item => item.productId.toString() !== productId);
+      }
     } else {
+      if (qty < 0) return res.status(400).json({ message: 'Invalid quantity' });
       cart.items.push({ productId, quantity: qty });
     }
     await cart.save();

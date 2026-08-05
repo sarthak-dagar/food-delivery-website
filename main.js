@@ -31,8 +31,14 @@ let isSignup = false;
 let productList = [];
 let cartItems = [];
 
-cartIcon.addEventListener('click', () => cartTab.classList.add('cart-tab-active'));
-closeBtn.addEventListener('click', () => cartTab.classList.remove('cart-tab-active'));
+cartIcon.addEventListener('click', (e) => {
+    e.preventDefault();
+    cartTab.classList.add('cart-tab-active');
+});
+closeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    cartTab.classList.remove('cart-tab-active');
+});
 hamburger.addEventListener('click', (e) => {
     e.preventDefault();
     mobileMenu.classList.toggle('mobile-menu-active');
@@ -89,7 +95,9 @@ const addToCart = async (product) => {
         method: 'POST',
         body: JSON.stringify({ productId: product._id, quantity: 1 })
     });
+    const data = await res.json();
     if (res.ok) loadCart();
+    else alert(data.message || 'Add to cart failed');
 };
 
 const renderCart = () => {
@@ -154,9 +162,11 @@ const loadCart = async () => {
     if (!token) { cartList.innerHTML = ''; cartTotal.textContent = '$0.00'; cartValue.textContent = 0; return; }
     const res = await api('/api/cart');
     const data = await res.json();
+    if (!res.ok) { alert(data.message); return; }
     cartItems = data.items;
     renderCart();
 };
+
 
 const loadOrders = async () => {
     if (!token || !orderList) return;
@@ -229,6 +239,14 @@ authForm.addEventListener('submit', async (e) => {
     } else {
         alert(data.message);
     }
+});
+
+const orderNowBtn = document.getElementById('orderNowBtn');
+const menuSection = document.getElementById('menuSection');
+
+orderNowBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    menuSection.scrollIntoView({ behavior: 'smooth' });
 });
 
 const initApp = async () => {
