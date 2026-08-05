@@ -1,0 +1,5 @@
+const router = require('express').Router();
+const { getAll, getById } = require('../controllers/productController');
+
+router.get('/', getAll);
+router.get('/:id', getById);
