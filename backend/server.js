@@ -4,7 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
   console.error('Error: .env me MONGO_URI aur JWT_SECRET set karo');
   process.exit(1);

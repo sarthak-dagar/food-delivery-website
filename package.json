@@ -1,0 +1,8 @@
+{
+  "name": "food-delivery",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node backend/server.js",
+    "seed": "node backend/seed.js"
+  }
+}
