@@ -5,6 +5,10 @@ const dotenv = require('dotenv');
 const path = require('path');
 
 dotenv.config();
+if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
+  console.error('Error: .env me MONGO_URI aur JWT_SECRET set karo');
+  process.exit(1);
+}
 
 const app = express();
 
@@ -23,4 +27,6 @@ app.use('/api/orders', require('./routes/orders'));
 app.use(express.static(path.join(__dirname, '..')));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log('Server running on port ${PORT}'));
+
+app.use((req, res) => res.status(404).json({ message: 'Route not found' }));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

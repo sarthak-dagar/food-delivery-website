@@ -1,4 +1,4 @@
-const mongooose = require('mongoose');
+const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema({
         }
     ],
     total: { type: String, required: true },
-    status: {  type: String, default: 'pending' },
+    status: { type: String, enum: ['pending', 'confirmed', 'delivered', 'cancelled'], default: 'pending' }, // ⚠️
     createdAt: { type: Date, default: Date.now }
 });
 
