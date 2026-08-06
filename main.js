@@ -151,7 +151,7 @@ const renderCart = () => {
     cartList.querySelectorAll('.remove').forEach(btn => {
         btn.addEventListener('click', async (e) => {
             e.preventDefault();
-            await api('/api/cart/' + btn.dataset.id, { method: 'DELETE' });
+            await api('/api/cart/' + btn.dataset.id, { method: 'DELETE' });          
             loadCart();
         });
     });
