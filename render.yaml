@@ -3,6 +3,7 @@ services:
     name: food-delivery
     runtime: node
     rootDir: backend
+    plan: free
     buildCommand: npm install
     startCommand: npm start
     envVars:
