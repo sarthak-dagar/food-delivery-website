@@ -208,7 +208,7 @@ signInBtn.addEventListener('click', (e) => {
 
 document.getElementById('modalClose').addEventListener('click', () => authModal.classList.remove('modal-active'));
 authModal.addEventListener('click', (e) => {
-    if (e.target === authModal) authModal.classList.remove('modal-active');
+    if (e.target === authModal) authModal.classList.remove('modal-active');      
 });
 
 authSwitch.addEventListener('click', (e) => {
