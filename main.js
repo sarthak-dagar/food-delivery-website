@@ -255,7 +255,7 @@ const initApp = async () => {
     showCards();
     if (token && userName) signInBtn.textContent = userName;
     loadCart();
-    loadOrders();
+    loadOrders();    
 };
 
 initApp();
