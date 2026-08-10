@@ -242,7 +242,7 @@ authForm.addEventListener('submit', async (e) => {
 });
 
 const orderNowBtn = document.getElementById('orderNowBtn');
-const menuSection = document.getElementById('menuSection');
+const menuSection = document.getElementById('menuSection');    
 
 orderNowBtn.addEventListener('click', (e) => {
     e.preventDefault();
