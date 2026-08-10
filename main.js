@@ -238,7 +238,7 @@ authForm.addEventListener('submit', async (e) => {
         loadOrders();
     } else {
         alert(data.message);
-    }
+    }    
 });
 
 const orderNowBtn = document.getElementById('orderNowBtn');
