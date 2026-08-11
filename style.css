@@ -54,7 +54,7 @@ li {
 .wrapper {
     max-width: 1400px;
     margin: auto;
-    padding-inline: 1.5;
+    padding-inline: 1.5rem;
 }
 
 img {
@@ -565,8 +565,6 @@ input[type="email"]:focus{
 
 @media screen and (max-width: 768px) {
 
-
-
     /* HEADER STYLING */
     .navlist,
     .desktop-action .btn {
@@ -584,10 +582,12 @@ input[type="email"]:focus{
         align-items: center;
         gap: 2rem;
         position: absolute;
-        top: 20%;
-        left: -100%;
-        transform: translateX(-50%);
-        width: 20rem;
+        top: calc(100% + 1rem);
+        left: 50%;
+        transform: translateX(-50%) scale(0.95);
+        opacity: 0;
+        pointer-events: none;
+        width: min(20rem, 90vw);
         padding: 2rem;
         background: var(--pure-white);
         border: .1rem solid var(--gold-finger);
@@ -595,48 +595,189 @@ input[type="email"]:focus{
         box-shadow:
             rgba(0, 0, 0, 0.05) 8px 8px 8px,
             rgba(0, 0, 0, 0.05) 8px 8px 8px inset;
-        transition: all 0.5s ease-in-out;
+        transition: all 0.3s ease-in-out;
     }
 
     .mobile-menu-active {
-        left: 50%;
-        transform: translateX(-50%);
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+        pointer-events: auto;
     }
 
-    /* SECTION STYLING  */
-
-    /* HERO STYLING */
-
-    h1 {
-        font-size: 3.6rem;
-    }
-
-    .content {
-        padding-top: 3rem;
-    }
-
-    .gap-2 {
-        gap: 1.4rem;
+    /* SPACING */
+    .p-top {
+        padding-top: 4rem;
     }
 
     .gap-4 {
-        gap: 4rem;
+        gap: 2rem;
     }
 
-    /* SECTION 01 */
+    .gap-2 {
+        gap: 1.2rem;
+    }
 
-    h2 {
+    .gap-3 {
+        gap: 1.5rem;
+    }
+
+    .btn {
+        padding: 0.8rem 1.5rem;
+    }
+
+    .para {
+        margin-block: 1.5rem;
+    }
+
+    /* HERO STYLING */
+    .hero-section {
+        min-height: auto;
+        padding-block: 2rem;
+    }
+
+    h1 {
         font-size: 3rem;
     }
 
-    /* SECTION 04 */
+    .content {
+        padding-top: 1rem;
+    }
 
+    /* SECTION 01 */
+    h2 {
+        font-size: 2.4rem;
+    }
+
+    h3 {
+        font-size: 1.7rem;
+    }
+
+    /* CART TAB */
+    .cart-tab {
+        width: 100%;
+        border-radius: 2rem 2rem 0 0;
+    }
+
+    .cart-tab-active {
+        inset: 14vh 0 0 auto;
+    }
+
+    .btn-container .btn {
+        flex: 1;
+        text-align: center;
+    }
+
+    /* SECTION 04 */
     .app-container{
-        padding: 2.2rem;
+        padding: 2rem 1.5rem;
     }
 
     .app-container .content h2{
-        font-size: 3.5rem;
+        font-size: 2.4rem;
+    }
+
+    /* FOOTER */
+    .footer-container {
+        margin-top: 5rem;
+        padding-block: 3rem;
+    }
+
+    .footer-wrapper {
+        flex-basis: 100%;
+    }
+
+    .footer-wrapper:nth-child(1) {
+        flex-basis: 100%;
+    }
+
+}
+
+@media screen and (max-width: 480px) {
+
+    .navbar {
+        min-height: 12vh;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+    }
+
+    h1 {
+        font-size: 2.4rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .para {
+        font-size: 1.05rem;
+        line-height: 1.6rem;
+    }
+
+    .hero-section {
+        padding-block: 1.5rem;
+    }
+
+    .p-top {
+        padding-top: 3rem;
+    }
+
+    .cart-tab-active {
+        inset: 10vh 0 0 auto;
+    }
+
+    .item {
+        gap: 0.7rem;
+        padding: 0.6rem 0.8rem;
+    }
+
+    .item .item-image img {
+        width: 4rem;
+    }
+
+    .item h4 {
+        font-size: 1.1rem;
+    }
+
+    .app-container {
+        padding: 1.5rem 1rem;
+        border-radius: 2rem;
+    }
+
+    .app-container .content h2 {
+        font-size: 1.8rem;
+    }
+
+    .input-container {
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 0.8rem;
+        width: 100%;
+    }
+
+    .input-container .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    input[type="email"] {
+        width: 100%;
+        height: auto;
+        padding-block: 0.8rem;
+    }
+
+    .order-list .order-card {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .modal {
+        padding: 2rem 1.5rem;
+    }
+
+    .mobile-menu {
+        width: 90vw;
     }
 
 }

@@ -23,6 +23,7 @@ const authPassword = document.getElementById('authPassword');
 const authSwitch = document.getElementById('authSwitch');
 const orderList = document.getElementById('orderList');
 const signInBtn = document.getElementById('signInBtn');
+const mobileSignInBtn = document.getElementById('mobileSignInBtn');
 const checkoutBtn = document.getElementById('checkoutBtn');
 
 let token = localStorage.getItem('token');
@@ -196,6 +197,11 @@ signInBtn.addEventListener('click', (e) => {
     authModal.classList.add('modal-active');
 });
 
+mobileSignInBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    authModal.classList.add('modal-active');
+});
+
 document.getElementById('modalClose').addEventListener('click', () => authModal.classList.remove('modal-active'));
 authModal.addEventListener('click', (e) => {
     if (e.target === authModal) authModal.classList.remove('modal-active');      
@@ -224,6 +230,7 @@ authForm.addEventListener('submit', async (e) => {
         localStorage.setItem('userName', userName);
         authModal.classList.remove('modal-active');
         signInBtn.textContent = userName;
+        mobileSignInBtn.textContent = userName;
         loadCart();
         loadOrders();
     } else {
@@ -243,7 +250,10 @@ const initApp = async () => {
     const res = await fetch('/api/products');
     productList = await res.json();
     showCards();
-    if (token && userName) signInBtn.textContent = userName;
+    if (token && userName) {
+        signInBtn.textContent = userName;
+        mobileSignInBtn.textContent = userName;
+    }
     loadCart();
     loadOrders();    
 };
