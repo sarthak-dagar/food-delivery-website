@@ -21,6 +21,7 @@ const getItems = userId => {
         FROM cart_items ci
         JOIN products p ON p.id = ci.productId
         WHERE ci.cartId = ?
+        ORDER BY ci.rowid DESC
     `).all(cart.id).map(row => ({
         _id: row.itemId,
         product: { _id: String(row.productId), id: row.productId, name: row.name, price: row.price, image: row.image },

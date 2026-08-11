@@ -96,8 +96,10 @@ const addToCart = async (product) => {
         body: JSON.stringify({ productId: product._id, quantity: 1 })
     });
     const data = await res.json();
-    if (res.ok) loadCart();
-    else alert(data.message || 'Add to cart failed');
+    if (res.ok) {
+        cartItems = data.items;
+        renderCart();
+    } else alert(data.message || 'Add to cart failed');
 };
 
 const renderCart = () => {
@@ -120,43 +122,31 @@ const renderCart = () => {
           <a href="#" class="quantity-btn plus" data-id="${item._id}" data-pid="${item.product._id}">
             <i class="fa-solid fa-plus"></i>
           </a>
-          <a href="#" class="quantity-btn remove" data-id="${item._id}">
-            <i class="fa-solid fa-xmark"></i>
-          </a>
         </div>
         `;
         cartList.appendChild(cartItem);
     });
 
-    cartList.querySelectorAll('.plus').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await api('/api/cart', {
-                method: 'POST',
-                body: JSON.stringify({ productId: btn.dataset.pid, quantity: 1 })
-            });
-            loadCart();
-        });
-    });
-    cartList.querySelectorAll('.minus').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await api('/api/cart', {
-                method: 'POST',
-                body: JSON.stringify({ productId: btn.dataset.pid, quantity: -1 })
-            });
-            loadCart();
-        });
-    });
-    cartList.querySelectorAll('.remove').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-            e.preventDefault();
-            await api('/api/cart/' + btn.dataset.id, { method: 'DELETE' });          
-            loadCart();
-        });
-    });
     updateTotals();
 };
+
+cartList.addEventListener('click', async (e) => {
+    const btn = e.target.closest('.quantity-btn');
+    if (!btn) return;
+    e.preventDefault();
+    const qty = btn.classList.contains('plus') ? 1 : -1;
+    const res = await api('/api/cart', {
+        method: 'POST',
+        body: JSON.stringify({ productId: btn.dataset.pid, quantity: qty })
+    });
+    const data = await res.json();
+    if (res.ok) {
+        cartItems = data.items;
+        renderCart();
+    } else {
+        alert(data.message);
+    }
+});
 
 const loadCart = async () => {
     if (!token) { cartList.innerHTML = ''; cartTotal.textContent = '$0.00'; cartValue.textContent = 0; return; }
