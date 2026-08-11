@@ -1,21 +1,13 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const Product = require('./models/Product');
+const db = require('./db');
 const products = require('../products.json');
 
-const path = require('path');
+const deleteAll = db.prepare('DELETE FROM products');
+const insert = db.prepare('INSERT INTO products (id, name, price, image) VALUES (@id, @name, @price, @image)');
 
+const seed = db.transaction(items => {
+  deleteAll.run();
+  for (const p of items) insert.run(p);
+});
 
-dotenv.config({ path: path.join(__dirname, '.env') });
-
-mongoose.connect(process.env.MONGO_URI)
-  .then(async () => {
-    await Product.deleteMany({});
-    await Product.insertMany(products);
-    console.log('Seed data inserted successfully');
-    process.exit(0);
-  })
-  .catch(err => {
-    console.error(err);
-    process.exit(1);
-  });
+seed(products);
+console.log('Seed data inserted successfully');

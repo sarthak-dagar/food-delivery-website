@@ -1,36 +1,22 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
-const Product = require('./models/Product');
+const crypto = require('crypto');
 
 dotenv.config({ path: path.join(__dirname, '.env') });
-if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
-  console.error('Error: .env me MONGO_URI aur JWT_SECRET set karo');
-  process.exit(1);
+
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = crypto.randomBytes(32).toString('hex');
+  console.warn('Warning: JWT_SECRET set nahi hai, temporary random secret use ho raha hai.');
 }
+
+require('./db');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-const seedProducts = async () => {
-  const count = await Product.countDocuments();
-  if (count === 0) {
-    const products = require('../products.json');
-    await Product.insertMany(products);
-    console.log('Products seeded (DB was empty)');
-  }
-};
-
-mongoose.connect(process.env.MONGO_URI)
-  .then(async () => {
-    console.log('MongoDB connected');
-    await seedProducts();
-  })
-  .catch(err => console.log(err));
 
 app.use('/api/products', require('./routes/products'));
 app.use('/api/auth', require('./routes/auth'));

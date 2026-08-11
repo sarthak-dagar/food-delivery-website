@@ -1,11 +1,9 @@
-const mongoose = require('mongoose');      
+const db = require('../db');
 
-const productSchema = new mongoose.Schema({   
-    id: { type: Number, required: true, unique: true },   
-    name: { type: String, required: true },               
-    price: { type: String, required: true },           
-    image: { type: String, required: true }       
-});         
+const rowToProduct = row => (row ? { _id: String(row.id), id: row.id, name: row.name, price: row.price, image: row.image } : null);
 
-module.exports = mongoose.model('Product', productSchema);    
+const findAll = () => db.prepare('SELECT * FROM products ORDER BY id ASC').all().map(rowToProduct);
 
+const findById = id => rowToProduct(db.prepare('SELECT * FROM products WHERE id = ?').get(Number(id)));
+
+module.exports = { findAll, findById };
