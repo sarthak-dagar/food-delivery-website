@@ -274,7 +274,9 @@ h4 {
 .cart-tab{
     background: var(--hint-yellow);
     position: fixed;
-    inset: 14vh -500px 1rem auto;
+    top: 14vh;
+    right: 0;
+    bottom: 1rem;
     width: 25rem;
     padding-block: 2rem;
     display: flex;
@@ -285,12 +287,14 @@ h4 {
     border-radius: 2rem;
     box-shadow:
     rgba(0, 0, 0, 0.1) -10px -10px 20px;
-    transition: .3s ease-in-out;
+    transform: translateX(110%);
+    visibility: hidden;
+    transition: transform .3s ease-in-out, visibility .3s;
 }
 
 .cart-tab-active{
-    inset: 14vh 0 1rem auto;
-
+    transform: translateX(0);
+    visibility: visible;
 }
 
 .cart-list{
@@ -658,10 +662,6 @@ input[type="email"]:focus{
         border-radius: 2rem 2rem 0 0;
     }
 
-    .cart-tab-active {
-        inset: 14vh 0 0 auto;
-    }
-
     .btn-container .btn {
         flex: 1;
         text-align: center;
@@ -721,10 +721,6 @@ input[type="email"]:focus{
 
     .p-top {
         padding-top: 3rem;
-    }
-
-    .cart-tab-active {
-        inset: 10vh 0 0 auto;
     }
 
     .item {
