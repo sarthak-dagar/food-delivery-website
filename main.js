@@ -250,21 +250,30 @@ const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-const scrollToMenu = () => {
+const scrollToSection = (selector) => {
+    const section = document.querySelector(selector);
+    if (!section) return;
     const headerHeight = document.querySelector('header').offsetHeight;
-    const top = menuSection.getBoundingClientRect().top + window.scrollY - headerHeight;
+    const top = section.getBoundingClientRect().top + window.scrollY - headerHeight;
     window.scrollTo({ top, behavior: 'smooth' });
 };
+
+const scrollToMenu = () => scrollToSection('#menuSection');
 
 document.querySelectorAll('.navlist a, .mobile-menu a').forEach(link => {
     link.addEventListener('click', (e) => {
         const label = link.textContent.trim().toLowerCase();
-        if (label === 'home') {
+        const targets = {
+            home: null,
+            menu: '#menuSection',
+            services: '#servicesSection',
+            about: '#aboutSection',
+            contact: '#contactSection',
+        };
+        if (label in targets) {
             e.preventDefault();
-            scrollToTop();
-        } else if (label === 'menu') {
-            e.preventDefault();
-            scrollToMenu();
+            if (label === 'home') scrollToTop();
+            else scrollToSection(targets[label]);
         }
         mobileMenu.classList.remove('mobile-menu-active');
         hamburgerIcon.classList.add('fa-bars');
