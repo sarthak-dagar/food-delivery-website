@@ -243,7 +243,33 @@ const menuSection = document.getElementById('menuSection');
 
 orderNowBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    menuSection.scrollIntoView({ behavior: 'smooth' });
+    scrollToMenu();
+});
+
+const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+const scrollToMenu = () => {
+    const headerHeight = document.querySelector('header').offsetHeight;
+    const top = menuSection.getBoundingClientRect().top + window.scrollY - headerHeight;
+    window.scrollTo({ top, behavior: 'smooth' });
+};
+
+document.querySelectorAll('.navlist a, .mobile-menu a').forEach(link => {
+    link.addEventListener('click', (e) => {
+        const label = link.textContent.trim().toLowerCase();
+        if (label === 'home') {
+            e.preventDefault();
+            scrollToTop();
+        } else if (label === 'menu') {
+            e.preventDefault();
+            scrollToMenu();
+        }
+        mobileMenu.classList.remove('mobile-menu-active');
+        hamburgerIcon.classList.add('fa-bars');
+        hamburgerIcon.classList.remove('fa-xmark');
+    });
 });
 
 const initApp = async () => {
