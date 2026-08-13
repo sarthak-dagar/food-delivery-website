@@ -1,9 +1,9 @@
 ﻿[
     {
         "id":  1,
-        "name":  "Double Beef Burger",
+        "name":  "Super Freak Burger",
         "price":  "$9.67",
-        "image":  "images/burger.png?v=2"
+        "image":  "images/burger.png?v=4"
     },
     {
         "id":  2,
