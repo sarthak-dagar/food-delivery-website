@@ -565,6 +565,19 @@ input[type="email"]:focus{
 
 
 
+/* TOUCH DEVICES (mobile pe desktop view me bhi apply hota hai) */
+@media (pointer: coarse) {
+    .navbar {
+        min-height: auto;
+        padding-block: 1rem;
+    }
+
+    .hero-section {
+        min-height: auto;
+        padding-block: 2rem;
+    }
+}
+
 /* MEDIA QURIES */
 
 @media screen and (max-width: 768px) {
