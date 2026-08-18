@@ -3,7 +3,7 @@ const Cart = require('../models/Cart');
 
 exports.createOrder = async (req, res) => {
   try {
-    const items = Cart.getItems(req.userId);
+    const items = await Cart.getItems(req.userId);
     if (items.length === 0) {
       return res.status(400).json({ message: 'Cart is empty' });
     }
@@ -17,8 +17,8 @@ exports.createOrder = async (req, res) => {
         price: item.product.price
       };
     });
-    const order = Order.createOrder(req.userId, orderItems, `$${total.toFixed(2)}`);
-    Cart.clear(req.userId);
+    const order = await Order.createOrder(req.userId, orderItems, `$${total.toFixed(2)}`);
+    await Cart.clear(req.userId);
     res.status(201).json(order);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -27,7 +27,7 @@ exports.createOrder = async (req, res) => {
 
 exports.getOrders = async (req, res) => {
   try {
-    res.json(Order.findByUser(req.userId));
+    res.json(await Order.findByUser(req.userId));
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -35,7 +35,7 @@ exports.getOrders = async (req, res) => {
 
 exports.getAllOrders = async (req, res) => {
   try {
-    res.json(Order.findAll());
+    res.json(await Order.findAll());
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -47,7 +47,7 @@ exports.updateOrderStatus = async (req, res) => {
     if (!['pending', 'completed', 'cancelled'].includes(status)) {
       return res.status(400).json({ message: 'Invalid status' });
     }
-    const order = Order.updateStatus(req.params.id, status);
+    const order = await Order.updateStatus(req.params.id, status);
     if (!order) return res.status(404).json({ message: 'Order not found' });
     res.json(order);
   } catch (err) {

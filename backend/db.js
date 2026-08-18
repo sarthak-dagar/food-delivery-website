@@ -1,15 +1,7 @@
-const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
-const dataDir = path.join(__dirname, 'data');
-if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
-
-const db = new Database(path.join(dataDir, 'fooddelivery.db'));
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
-
-db.exec(`
+const SCHEMA = `
   CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -57,17 +49,87 @@ db.exec(`
     quantity INTEGER NOT NULL,
     FOREIGN KEY (orderId) REFERENCES orders(id) ON DELETE CASCADE
   );
-`);
+`;
 
-const count = db.prepare('SELECT COUNT(*) AS c FROM products').get().c;
-if (count === 0) {
-  const products = require('../products.json');
-  const insert = db.prepare('INSERT INTO products (id, name, price, image) VALUES (@id, @name, @price, @image)');
-  const seed = db.transaction(items => {
-    for (const p of items) insert.run(p);
-  });
-  seed(products);
-  console.log('Products seeded (DB was empty)');
+const url = process.env.TURSO_DATABASE_URL;
+const token = process.env.TURSO_AUTH_TOKEN;
+const isTurso = !!(url && token);
+
+let db;
+if (isTurso) {
+  const { createClient } = require('@libsql/client');
+  db = createClient({ url, authToken: token });
+  console.log('Database: Turso (cloud SQLite)');
+} else {
+  const Database = require('better-sqlite3');
+  const dataDir = path.join(__dirname, 'data');
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+  db = new Database(path.join(dataDir, 'fooddelivery.db'));
+  db.pragma('journal_mode = WAL');
+  db.pragma('foreign_keys = ON');
+  console.log('Database: local SQLite');
 }
 
-module.exports = db;
+const makeApi = (target) => ({
+  async exec(sql) {
+    if (isTurso) await target.executeMultiple(sql);
+    else target.exec(sql);
+  },
+  async all(sql, ...args) {
+    if (isTurso) {
+      const r = await target.execute({ sql, args });
+      return r.rows;
+    }
+    return target.prepare(sql).all(...args);
+  },
+  async get(sql, ...args) {
+    if (isTurso) {
+      const r = await target.execute({ sql, args });
+      return r.rows[0] || null;
+    }
+    return target.prepare(sql).get(...args) || null;
+  },
+  async run(sql, ...args) {
+    if (isTurso) {
+      const r = await target.execute({ sql, args });
+      return { changes: r.rowsAffected };
+    }
+    return target.prepare(sql).run(...args);
+  }
+});
+
+const api = makeApi(db);
+
+api.transaction = async (fn) => {
+  if (isTurso) {
+    const tx = await db.transaction('write');
+    try {
+      const out = await fn(makeApi(tx));
+      await tx.commit();
+      return out;
+    } catch (err) {
+      await tx.rollback();
+      throw err;
+    }
+  }
+  return fn(makeApi(db));
+};
+
+const init = async () => {
+  await api.exec(SCHEMA);
+  const row = await api.get('SELECT COUNT(*) AS c FROM products');
+  if (!row || row.c === 0) {
+    const products = require('../products.json');
+    for (const p of products) {
+      await api.run('INSERT INTO products (id, name, price, image) VALUES (?, ?, ?, ?)', p.id, p.name, p.price, p.image);
+    }
+    console.log('Products seeded (DB was empty)');
+  }
+};
+
+init().catch(err => {
+  console.error('Database init failed:', err.message);
+  process.exit(1);
+});
+
+module.exports = api;

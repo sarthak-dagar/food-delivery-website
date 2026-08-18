@@ -1,13 +1,16 @@
 const db = require('./db');
 const products = require('../products.json');
 
-const deleteAll = db.prepare('DELETE FROM products');
-const insert = db.prepare('INSERT INTO products (id, name, price, image) VALUES (@id, @name, @price, @image)');
+const run = async () => {
+  await db.run('DELETE FROM products');
+  for (const p of products) {
+    await db.run('INSERT INTO products (id, name, price, image) VALUES (?, ?, ?, ?)', p.id, p.name, p.price, p.image);
+  }
+  console.log('Seed data inserted successfully');
+  process.exit(0);
+};
 
-const seed = db.transaction(items => {
-  deleteAll.run();
-  for (const p of items) insert.run(p);
-});   
-
-seed(products);
-console.log('Seed data inserted successfully');
+run().catch(err => {
+  console.error(err.message);
+  process.exit(1);
+});

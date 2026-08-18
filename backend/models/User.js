@@ -4,16 +4,15 @@ const { randomUUID } = require('crypto');
 
 const rowToUser = row => (row ? { id: row.id, name: row.name, email: row.email, password: row.password, createdAt: row.createdAt } : null);
 
-const findById = id => rowToUser(db.prepare('SELECT * FROM users WHERE id = ?').get(id));
+const findById = async id => rowToUser(await db.get('SELECT * FROM users WHERE id = ?', id));
 
-const findByEmail = email => rowToUser(db.prepare('SELECT * FROM users WHERE email = ?').get(email));
+const findByEmail = async email => rowToUser(await db.get('SELECT * FROM users WHERE email = ?', email));
 
-const createUser = ({ name, email, password }) => {
+const createUser = async ({ name, email, password }) => {
     const id = randomUUID();
     const hash = bcrypt.hashSync(password, 10);
     const createdAt = new Date().toISOString();
-    db.prepare('INSERT INTO users (id, name, email, password, createdAt) VALUES (?, ?, ?, ?, ?)')
-        .run(id, name, email, hash, createdAt);
+    await db.run('INSERT INTO users (id, name, email, password, createdAt) VALUES (?, ?, ?, ?, ?)', id, name, email, hash, createdAt);
     return findById(id);
 };
 
