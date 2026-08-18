@@ -33,4 +33,26 @@ const createOrder = (userId, items, total) => {
 const findByUser = userId =>
     db.prepare('SELECT * FROM orders WHERE userId = ? ORDER BY createdAt DESC').all(userId).map(rowToOrder);
 
-module.exports = { createOrder, findById, findByUser };
+const findAll = () => {
+    const orders = db.prepare(`
+        SELECT o.*, u.name AS userName, u.email AS userEmail
+        FROM orders o JOIN users u ON u.id = o.userId
+        ORDER BY o.createdAt DESC
+    `).all();
+    return orders.map(row => {
+        const items = db.prepare('SELECT productId, name, price, image, quantity FROM order_items WHERE orderId = ?').all(row.id)
+            .map(i => ({
+                product: { id: i.productId, name: i.name, price: i.price, image: i.image },
+                quantity: i.quantity,
+                price: i.price
+            }));
+        return { ...rowToOrder(row), userName: row.userName, userEmail: row.userEmail, items };
+    });
+};
+
+const updateStatus = (id, status) => {
+    const res = db.prepare('UPDATE orders SET status = ? WHERE id = ?').run(status, id);
+    return res.changes > 0 ? findById(id) : null;
+};
+
+module.exports = { createOrder, findById, findByUser, findAll, updateStatus };

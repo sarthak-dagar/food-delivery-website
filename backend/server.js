@@ -25,6 +25,8 @@ app.use('/api/orders', require('./routes/orders'));
 
 app.use(express.static(path.join(__dirname, '..')));
 
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, '..', 'admin.html')));
+
 const PORT = process.env.PORT || 5000;          
 
 app.use((req, res) => res.status(404).json({ message: 'Route not found' }));     

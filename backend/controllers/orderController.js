@@ -32,3 +32,25 @@ exports.getOrders = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+exports.getAllOrders = async (req, res) => {
+  try {
+    res.json(Order.findAll());
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.updateOrderStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    if (!['pending', 'completed', 'cancelled'].includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
+    const order = Order.updateStatus(req.params.id, status);
+    if (!order) return res.status(404).json({ message: 'Order not found' });
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
