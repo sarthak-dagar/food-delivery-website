@@ -26,6 +26,8 @@ app.use('/api/orders', require('./routes/orders'));
 app.use(express.static(path.join(__dirname, '..')));
 
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, '..', 'admin.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '..', 'index.html')));
+app.get('/home', (req, res) => res.sendFile(path.join(__dirname, '..', 'index.html')));
 
 const PORT = process.env.PORT || 5000;          
 
