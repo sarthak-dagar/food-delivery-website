@@ -47,13 +47,24 @@ hamburger.addEventListener('click', (e) => {
     hamburgerIcon.classList.toggle('fa-xmark');
 });
 
-const api = (url, options = {}) => fetch(url, {
-    ...options,
-    headers: {
-        'Content-Type': 'application/json',
-        ...(token ? { Authorization: 'Bearer ' + token } : {})
+const api = async (url, options = {}) => {
+    const res = await fetch(url, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: 'Bearer ' + token } : {})
+        }
+    });
+    if (res.status === 401) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        token = null;
+        userName = null;
+        signInBtn.textContent = 'Sign In';
+        mobileSignInBtn.textContent = 'Sign In';
     }
-});
+    return res;
+};
 
 const showCards = () => {
     productList.forEach(product => {
