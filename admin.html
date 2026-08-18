@@ -283,6 +283,10 @@
       white-space: nowrap;
     }
 
+    .date-cell small {
+      font-size: .8rem;
+    }
+
     .status-select {
       padding: .4rem .9rem;
       border: 1.5px solid #e0e0e0;
@@ -471,7 +475,10 @@
           </td>
           <td><div class="order-items">${itemsHtml}</div></td>
           <td class="total-cell">${order.total}</td>
-          <td class="date-cell">${new Date(order.createdAt).toLocaleDateString()}</td>
+          <td class="date-cell">
+            ${new Date(order.createdAt).toLocaleDateString()}<br>
+            <small>${new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>
+          </td>
           <td>
             <select class="status-select select-${order.status}" data-id="${order.id}">
               <option value="pending" ${order.status === 'pending' ? 'selected' : ''}>Pending</option>
