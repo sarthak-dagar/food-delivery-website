@@ -143,4 +143,4 @@ Render.com ready — `render.yaml` serves the app from the `backend` directory. 
 | Command        | Description                        |
 | -------------- | ---------------------------------- |
 | `npm start`    | Run the server (port 5000)         |
-| `npm run seed` | Re-seed products table             |
+| `npm run seed` | Re-seed products table             |    
