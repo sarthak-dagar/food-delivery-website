@@ -134,7 +134,7 @@ TURSO_AUTH_TOKEN=
 
 If `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` are both set, the app uses Turso (cloud SQLite); otherwise it falls back to a local SQLite file.
 
-## Deployment
+## Deployment    
 
 Render.com ready — `render.yaml` serves the app from the `backend` directory. Set `JWT_SECRET` (required) and optionally `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` as secret env vars. Express also serves the static frontend files, so no separate hosting is needed.
 
