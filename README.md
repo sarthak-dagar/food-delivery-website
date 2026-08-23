@@ -128,7 +128,7 @@ JWT_SECRET=your-long-random-string
 # Defaults to 5000 locally
 PORT=5000
 # Turso (cloud SQLite) - optional. Leave blank to use local SQLite.
-TURSO_DATABASE_URL=
+TURSO_DATABASE_URL=    
 TURSO_AUTH_TOKEN=
 ```
 
