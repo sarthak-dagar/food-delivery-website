@@ -84,7 +84,7 @@ All endpoints below were verified working against a running server.
 | Method | Endpoint          | Auth | Description            |
 | ------ | ----------------- | ---- | ---------------------- |
 | GET    | `/api/products`   | No   | List all products      |
-| GET    | `/api/products/:id` | No  | Get single product     |
+| GET    | `/api/products/:id` | No  | Get single product     |           
 
 ### Auth
 
