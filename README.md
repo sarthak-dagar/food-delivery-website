@@ -1,6 +1,6 @@
-# Foodie - Food Delivery Website
+# 🍕 Foodie - Food Delivery Website
 
-A full-stack food delivery web application. Users can browse the menu, create an account, add items to the cart, place orders, and track their order history. Includes a separate admin panel to view and update all orders.
+A complete full-stack food delivery application where customers can browse products, register, manage their cart, place orders, and track delivery status. Admins can monitor all orders and update statuses from a dedicated dashboard.
 
 ## Tech Stack
 
