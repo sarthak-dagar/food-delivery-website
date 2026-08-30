@@ -101,33 +101,3 @@ All endpoints below were verified working against a running server.
 | POST   | `/api/cart`         | Yes  | Add/update item `{productId, quantity}` |
 | DELETE | `/api/cart/:itemId` | Yes  | Remove cart item         |
 
-### Orders
-
-| Method | Endpoint                    | Auth | Description                       |
-| ------ | --------------------------- | ---- | --------------------------------- |
-| POST   | `/api/orders`               | Yes  | Create order from cart            |
-| GET    | `/api/orders`               | Yes  | Get logged-in user's order history |
-| GET    | `/api/orders/all`           | No   | All orders + user info (admin)    |
-| PATCH  | `/api/orders/:id/status`    | No   | Update order status (admin)       |
-
-Protected routes require `Authorization: Bearer <token>` header.
-
-> Note: `GET /api/orders/all` and `PATCH /api/orders/:id/status` are admin endpoints and are currently **not** protected with auth middleware.
-
-### Errors
-
-Any unmatched route returns `404` with `{ "message": "Route not found" }`.
-
-## Environment Variables
-
-Copy `.env.example` to `backend/.env`:
-
-```
-# Optional - random one is generated at startup if not set
-JWT_SECRET=your-long-random-string
-# Defaults to 5000 locally
-PORT=5000
-# Turso (cloud SQLite) - optional. Leave blank to use local SQLite.     
-TURSO_DATABASE_URL=    
-TURSO_AUTH_TOKEN=
-```
