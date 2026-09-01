@@ -13,17 +13,43 @@ A complete full-stack food delivery application where customers can browse produ
 
 ## Features
 
-- Responsive navbar with smooth scroll (Home, Menu, Services, About, Contact)
-- Mobile hamburger menu
-- Product menu loaded dynamically from the backend
-- Sign up / Sign in (JWT stored in localStorage)
-- Cart with live total, badge count, and quantity controls
-- Checkout and order history with status
-- Admin panel (`/admin`) — stats (total, pending, completed orders + revenue), list all orders, update order status
-- Swiper reviews slider, newsletter section, sticky header
-- SQLite auto-seeded with products on first run
+✅ Responsive navbar with smooth scroll navigation (Home, Menu, Services, About, Contact)  
+✅ Mobile-friendly hamburger menu  
+✅ Dynamic product menu loaded from backend  
+✅ User authentication with JWT (Sign up / Sign in)  
+✅ Shopping cart with real-time totals and quantity controls  
+✅ Checkout and order history with delivery status tracking  
+✅ Admin dashboard with order stats (total, pending, completed orders + revenue)  
+✅ Order management - view, list, and update order status  
+✅ Swiper.js reviews slider, newsletter section, sticky header  
+✅ SQLite auto-seeded with products on first run  
 
-## Pages / Routes
+## Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+
+### Installation & Setup
+
+```bash
+# Install dependencies
+npm install
+
+# Optional: Re-seed the database with default products
+npm run seed
+
+# Start the development server
+npm start
+```
+
+Open your browser and navigate to:
+- **Storefront**: `http://localhost:5000`
+- **Admin Dashboard**: `http://localhost:5000/admin`
+
+The database file `backend/data/fooddelivery.db` is created automatically on first run and auto-seeded with sample products if empty.
+
+## Page Routes
 
 | Route    | File          | Description                          |
 | -------- | ------------- | ------------------------------------ |
