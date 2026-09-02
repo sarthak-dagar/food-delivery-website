@@ -1,6 +1,6 @@
-# 🍕 Foodie - Food Delivery Website
+# 🍕 Foodie — Food Delivery Website
 
-A complete full-stack food delivery application where customers can browse products, register, manage their cart, place orders, and track delivery status. Admins can monitor all orders and update statuses from a dedicated dashboard.
+Foodie is a full-stack food delivery website. Customers can browse food, create an account, manage a cart, place orders, and track delivery status. Admins can view orders and update their status.
 
 ## Tech Stack
 
@@ -24,32 +24,31 @@ A complete full-stack food delivery application where customers can browse produ
 ✅ Swiper.js reviews slider, newsletter section, sticky header  
 ✅ SQLite auto-seeded with products on first run  
 
-## Getting Started
+## Quick Start
 
 ### Prerequisites
 - Node.js (v14 or higher)
 - npm or yarn
 
-### Installation & Setup
+### Install and run
 
 ```bash
-# Install dependencies
 npm install
-
-# Optional: Re-seed the database with default products
-npm run seed
-
-# Start the development server
 npm start
 ```
 
-Open your browser and navigate to:
-- **Storefront**: `http://localhost:5000`
-- **Admin Dashboard**: `http://localhost:5000/admin`
+Open these pages in your browser:
+- Storefront: `http://localhost:5000`
+- Admin dashboard: `http://localhost:5000/admin`
 
-The database file `backend/data/fooddelivery.db` is created automatically on first run and auto-seeded with sample products if empty.
+The database is created automatically the first time the server starts. To load the default products again, run `npm run seed`.
 
-## Page Routes
+### Prerequisites
+
+- Node.js 14 or newer
+- npm (included with Node.js)
+
+## Pages
 
 | Route    | File          | Description                          |
 | -------- | ------------- | ------------------------------------ |
@@ -57,18 +56,6 @@ The database file `backend/data/fooddelivery.db` is created automatically on fir
 | `/home`  | `index.html`  | Alias for the main page              |
 | `/admin` | `admin.html`  | Admin dashboard for all orders       |
 | Static   | `style.css`, `main.js`, `admin.js`, `images/` | Served automatically |
-
-## Getting Started
-
-```bash
-npm install      # install dependencies
-npm run seed     # optional: re-seed products from products.json
-npm start        # start server on http://localhost:5000
-```
-
-Then open `http://localhost:5000` in your browser. The admin panel is at `http://localhost:5000/admin`.
-
-Database file `backend/data/fooddelivery.db` is created automatically on first run and auto-seeded if empty.
 
 ## Project Structure
 
@@ -92,51 +79,17 @@ Database file `backend/data/fooddelivery.db` is created automatically on first r
     └── data/                # Local SQLite database (auto-created)
 ```
 
-## Project Overview
+## How It Works
 
-**Foodie** is a modern, full-stack food delivery web application built with vanilla JavaScript on the frontend and Node.js/Express on the backend. It replicates real-world e-commerce functionality including user authentication, product browsing, shopping cart management, order placement, and delivery tracking. The application features both customer and admin interfaces for complete order management.
+1. Products are loaded from the backend and shown on the storefront.
+2. Users sign up or log in. Passwords are protected with bcrypt, and sessions use JWT.
+3. Logged-in users add food to their cart and place orders.
+4. Users can view their order history and delivery status.
+5. Admins can view all orders and change their status.
 
-## Frontend Overview
+## Database
 
-The frontend is built with **HTML, CSS, and Vanilla JavaScript** without any heavy frameworks. It includes:
-- **Responsive Design**: Mobile-first approach with hamburger menu for smaller screens
-- **Dynamic Product Loading**: Products are fetched from the backend API and rendered dynamically
-- **User Authentication**: Sign up and sign in functionality with JWT tokens stored in localStorage
-- **Shopping Cart**: Add/remove items, update quantities, view real-time totals and badge counts
-- **Order Management**: Place orders and view order history with delivery status tracking
-- **Enhanced UX**: Swiper.js for smooth reviews slider, sticky header, newsletter subscription section
-
-### Frontend Files
-- `index.html` — Main storefront page
-- `admin.html` — Admin dashboard page
-- `style.css` — All styling for responsive design
-- `main.js` — Cart logic, authentication, API calls, navigation, DOM manipulation
-- `admin.js` — Admin panel functionality (view orders, update statuses, display stats)
-
-## Backend Overview
-
-The backend is built with **Node.js and Express**, providing a RESTful API to serve the frontend and manage all business logic.
-
-### Backend Responsibilities
-- **Server Setup**: Express server running on port 5000
-- **Database Management**: SQLite (local) or Turso (cloud) for data persistence
-- **API Routes**: Handle all requests for products, authentication, cart, and orders
-- **Security**: JWT-based authentication with bcrypt password hashing
-- **Data Seeding**: Auto-populates the database with products on first run
-
-### Backend Files
-- `server.js` — Main Express application entry point
-- `db.js` — Database initialization, table creation, and auto-seeding logic
-- `seed.js` — Script to re-seed products from products.json
-- `routes/` — Organized API endpoint handlers (auth, products, cart, orders)
-- `controllers/` — Business logic separated from routes
-- `models/` — Direct database query operations
-- `middleware/` — JWT verification and authentication middleware
-- `data/` — Local SQLite database file (auto-created)
-
-## Database Overview
-
-The application uses **SQLite** as the database (either local with better-sqlite3 or cloud with Turso). On the first run, the database is automatically created and seeded with product data from `products.json`.
+Foodie uses SQLite locally or Turso in the cloud. The local database is created at `backend/data/fooddelivery.db` and can be seeded from `products.json`.
 
 ### Database Tables
 - **users** — Stores user account information (name, email, hashed password)
@@ -145,34 +98,9 @@ The application uses **SQLite** as the database (either local with better-sqlite
 - **order_items** — Links products to orders (order_id, product_id, quantity, price)
 - **cart** — Temporary shopping cart storage (user_id, product_id, quantity)
 
-## Authentication Flow
-
-1. User registers with name, email, and password
-2. Password is hashed using bcrypt before storage
-3. JWT token is generated and sent to the client
-4. Token is stored in localStorage for persistent sessions
-5. Token is included in Authorization header for protected API requests
-6. Backend middleware validates JWT on each protected route
-
-## Order Management Flow
-
-### Customer Side
-1. Browse products from the dynamic menu
-2. Add items to cart with quantity controls
-3. Proceed to checkout
-4. Place order (cart items become an order record)
-5. View order history with current delivery status
-
-### Admin Side
-1. Log in to `/admin` dashboard
-2. View dashboard statistics (total orders, pending orders, completed orders, total revenue)
-3. See a list of all orders with customer details and current status
-4. Update order status (Pending → Preparing → Out for Delivery → Delivered)
-5. Real-time order management
-
 ## API Endpoints
 
-All endpoints below were verified working against a running server.
+These are the main API endpoints:
 
 ### Public pages & static files
 
@@ -218,26 +146,10 @@ All endpoints below were verified working against a running server.
 
 The project includes `render.yaml` for easy deployment to Render.com. Simply connect your GitHub repository and the configuration will handle the deployment automatically. The cloud SQLite database (Turso) is used in production for reliability.
 
-## How to Use This Project
+## Customization
 
-### For Development
-1. Clone/download the project
-2. Run `npm install` to install dependencies
-3. Run `npm start` to start the server on `http://localhost:5000`
-4. Open the storefront at `http://localhost:5000` and admin panel at `http://localhost:5000/admin`
-5. Optionally run `npm run seed` to reset the product database
-
-### For Customization
 - **Add Products**: Edit `products.json` and run `npm run seed`
 - **Modify Styles**: Edit `style.css` for branding
 - **Extend Features**: Add new API routes in `backend/routes/` and controllers in `backend/controllers/`
 - **Change Database**: Switch from better-sqlite3 to Turso in `backend/db.js`
-
-## Key Technologies Explained
-
-- **JWT (JSON Web Tokens)**: Stateless authentication method, token verified on each request
-- **bcrypt**: Industry-standard password hashing library that adds security
-- **SQLite**: Lightweight, serverless database perfect for small to medium applications
-- **Swiper.js**: Touch-enabled carousel library for smooth slider interactions
-- **Express Middleware**: Functions that intercept requests for auth, logging, etc.
 
