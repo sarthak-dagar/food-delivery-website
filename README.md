@@ -43,11 +43,6 @@ Open these pages in your browser:
 
 The database is created automatically the first time the server starts. To load the default products again, run `npm run seed`.
 
-### Prerequisites
-
-- Node.js 14 or newer
-- npm (included with Node.js)
-
 ## Pages
 
 | Route    | File          | Description                          |
