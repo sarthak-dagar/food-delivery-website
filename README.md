@@ -8,7 +8,7 @@ Foodie is a full-stack food delivery website. Customers can browse food, create 
 | ---------- | ----------------------------------- |
 | Frontend   | HTML, CSS, Vanilla JavaScript, Swiper.js |
 | Backend    | Node.js, Express (REST API)         |
-| Database   | SQLite (better-sqlite3) or Turso (cloud SQLite) |
+| Database   | SQLite (better-sqlite3) or Turso (cloud SQLite) |        
 | Auth       | JWT + bcrypt password hashing       |
 
 ## Features
