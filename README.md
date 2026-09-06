@@ -18,7 +18,7 @@ Foodie is a full-stack food delivery website. Customers can browse food, create 
 ✅ Dynamic product menu loaded from backend  
 ✅ User authentication with JWT (Sign up / Sign in)  
 ✅ Shopping cart with real-time totals and quantity controls  
-✅ Checkout and order history with delivery status tracking  
+✅ Checkout and order history with delivery status tracking     
 ✅ Admin dashboard with order stats (total, pending, completed orders + revenue)  
 ✅ Order management - view, list, and update order status  
 ✅ Swiper.js reviews slider, newsletter section, sticky header  
