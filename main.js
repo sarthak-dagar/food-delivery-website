@@ -166,7 +166,7 @@ const loadCart = async () => {
     const data = await res.json();
     if (!res.ok) { alert(data.message); return; }
     cartItems = data.items;
-    renderCart();
+    renderCart();     
 };
 
 
