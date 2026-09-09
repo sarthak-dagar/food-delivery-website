@@ -165,7 +165,7 @@ const loadCart = async () => {
     const res = await api('/api/cart');
     const data = await res.json();
     if (!res.ok) { alert(data.message); return; }
-    cartItems = data.items;
+    cartItems = data.items;     
     renderCart();     
 };
 
