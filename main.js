@@ -160,7 +160,7 @@ cartList.addEventListener('click', async (e) => {
     }
 });
 
-const loadCart = async () => {
+const loadCart = async () => {  
     if (!token) { cartList.innerHTML = ''; cartTotal.textContent = '$0.00'; cartValue.textContent = 0; return; }
     const res = await api('/api/cart');   
     const data = await res.json();   
