@@ -155,7 +155,7 @@ cartList.addEventListener('click', async (e) => {
     if (res.ok) {
         cartItems = data.items;
         renderCart();
-    } else {
+    } else {     
         alert(data.message);
     }
 });
