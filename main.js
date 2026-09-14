@@ -152,7 +152,7 @@ cartList.addEventListener('click', async (e) => {
         body: JSON.stringify({ productId: btn.dataset.pid, quantity: qty })
     });
     const data = await res.json();
-    if (res.ok) {
+    if (res.ok) {    
         cartItems = data.items;
         renderCart();
     } else {     
