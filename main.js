@@ -153,7 +153,7 @@ cartList.addEventListener('click', async (e) => {
     });
     const data = await res.json();    
     if (res.ok) {    
-        cartItems = data.items;
+        cartItems = data.items;   
         renderCart();
     } else {     
         alert(data.message);
