@@ -1,6 +1,6 @@
 # 🍕 Foodie — Food Delivery Website
 
-Foodie is a full-stack food delivery website. Customers can browse food, create an account, manage a cart, place orders, and track delivery status. Admins can view orders and update their status.
+Foodie is a full-stack food delivery website. Customers can browse food, create an account, manage a cart, place orders, and track delivery status. Admins can view all orders and update their status.
 
 ## Tech Stack
 
@@ -22,7 +22,7 @@ Foodie is a full-stack food delivery website. Customers can browse food, create 
 ✅ Admin dashboard with order stats (total, pending, completed orders + revenue)  
 ✅ Order management - view, list, and update order status  
 ✅ Swiper.js reviews slider, newsletter section, sticky header  
-✅ SQLite auto-seeded with products on first run  
+✅ Database auto-seeded with products on first run
 
 ## Quick Start
 
@@ -41,7 +41,22 @@ Open these pages in your browser:
 - Storefront: `http://localhost:5000`
 - Admin dashboard: `http://localhost:5000/admin`
 
-The database is created automatically the first time the server starts. To load the default products again, run `npm run seed`.
+The database is created automatically the first time the server starts. To reload the default products, run `npm run seed`.
+
+### Environment variables
+
+Copy `.env.example` to `backend/.env` if you want to customize settings:
+
+```bash
+cp .env.example backend/.env
+```
+
+| Variable             | Description                                          |
+| -------------------- | ---------------------------------------------------- |
+| `JWT_SECRET`         | Secret used to sign tokens. Auto-generates if unset. |
+| `PORT`               | Server port (defaults to `5000`).                    |
+| `TURSO_DATABASE_URL` | Optional Turso URL to use cloud SQLite.              |
+| `TURSO_AUTH_TOKEN`   | Optional Turso auth token.                           |
 
 ## Pages
 
@@ -50,18 +65,21 @@ The database is created automatically the first time the server starts. To load 
 | `/`      | `index.html`  | Main storefront page                 |
 | `/home`  | `index.html`  | Alias for the main page              |
 | `/admin` | `admin.html`  | Admin dashboard for all orders       |
-| Static   | `style.css`, `main.js`, `admin.js`, `images/` | Served automatically |
+| Static   | `style.css`, `admin.css`, `main.js`, `admin.js`, `images/` | Served automatically |
 
 ## Project Structure
 
 ```
-├── index.html               # Frontend page
-├── style.css                # Styles
-├── main.js                  # Frontend logic (API calls, cart, auth, nav)
+├── index.html               # Storefront page
+├── style.css                # Storefront styles
+├── main.js                  # Storefront logic (API calls, cart, auth, nav)
 ├── admin.html               # Admin dashboard page
+├── admin.css                # Admin dashboard styles
 ├── admin.js                 # Admin logic (list/update orders)
 ├── products.json            # Seed product data
 ├── render.yaml              # Render.com deployment config
+├── .env.example             # Example environment variables
+├── .gitignore
 ├── images/                  # Static images
 └── backend/
     ├── server.js            # Express entry point
@@ -71,6 +89,7 @@ The database is created automatically the first time the server starts. To load 
     ├── controllers/         # Business logic
     ├── models/              # Database operations
     ├── middleware/          # JWT auth verification
+    ├── .env                 # Local environment config (not committed)
     └── data/                # Local SQLite database (auto-created)
 ```
 
@@ -84,18 +103,17 @@ The database is created automatically the first time the server starts. To load 
 
 ## Database
 
-Foodie uses SQLite locally or Turso in the cloud. The local database is created at `backend/data/fooddelivery.db` and can be seeded from `products.json`.
+Foodie uses SQLite locally or Turso in the cloud. When `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` are set, Turso is used; otherwise a local database is created at `backend/data/fooddelivery.db`. Products are auto-seeded from `products.json` if the table is empty.
 
 ### Database Tables
-- **users** — Stores user account information (name, email, hashed password)
-- **products** — Contains all available food items (name, price, description, image, category)
-- **orders** — Tracks all customer orders (user_id, total_amount, status, created_at)
-- **order_items** — Links products to orders (order_id, product_id, quantity, price)
-- **cart** — Temporary shopping cart storage (user_id, product_id, quantity)
+- **users** — User accounts (id, name, email, hashed password, createdAt)
+- **products** — Available food items (id, name, price, image)
+- **carts** — One cart per user (id, userId)
+- **cart_items** — Items in a cart (id, cartId, productId, quantity)
+- **orders** — Customer orders (id, userId, total, status, createdAt)
+- **order_items** — Snapshot of items for each order (orderId, productId, name, price, image, quantity)
 
 ## API Endpoints
-
-These are the main API endpoints:
 
 ### Public pages & static files
 
@@ -128,23 +146,24 @@ These are the main API endpoints:
 | POST   | `/api/cart`         | Yes  | Add/update item `{productId, quantity}` |
 | DELETE | `/api/cart/:itemId` | Yes  | Remove cart item         |
 
-### Orders (auth required)
+### Orders
 
-| Method | Endpoint              | Auth | Description              |
-| ------ | --------------------- | ---- | ------------------------ |
-| GET    | `/api/orders`         | Yes  | Get user's order history |
-| POST   | `/api/orders`         | Yes  | Create new order         |
-| GET    | `/api/orders/:id`     | Yes  | Get order details        |
-| PUT    | `/api/orders/:id`     | Yes  | Update order status (admin only) |
+| Method | Endpoint                 | Auth | Description                     |
+| ------ | ------------------------ | ---- | ------------------------------- |
+| POST   | `/api/orders`            | Yes  | Create a new order              |
+| GET    | `/api/orders`            | Yes  | Get user's order history        |
+| GET    | `/api/orders/all`        | No*  | List all orders (admin)         |
+| PATCH  | `/api/orders/:id/status` | No*  | Update order status (admin only) |
+
+*Order list/update routes bypass JWT in this version. Add admin checks in `backend/routes/orders.js` before exposing them publicly in production.
 
 ## Deployment
 
-The project includes `render.yaml` for easy deployment to Render.com. Simply connect your GitHub repository and the configuration will handle the deployment automatically. The cloud SQLite database (Turso) is used in production for reliability.
+The project includes `render.yaml` for easy deployment to Render.com. Set the `JWT_SECRET`, `TURSO_DATABASE_URL`, and `TURSO_AUTH_TOKEN` environment variables when connecting your GitHub repository. The cloud SQLite database (Turso) is used in production for persistence across redeploys.
 
 ## Customization
 
 - **Add Products**: Edit `products.json` and run `npm run seed`
-- **Modify Styles**: Edit `style.css` for branding
+- **Modify Styles**: Edit `style.css` (storefront) or `admin.css` (dashboard) for branding
 - **Extend Features**: Add new API routes in `backend/routes/` and controllers in `backend/controllers/`
-- **Change Database**: Switch from better-sqlite3 to Turso in `backend/db.js`
-
+- **Change Database**: Set Turso variables in `backend/.env` or use local SQLite via `backend/db.js`
