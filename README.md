@@ -27,7 +27,7 @@ Foodie is a full-stack food delivery website. Customers can browse food, create 
 ## Quick Start
 
 ### Prerequisites
-- Node.js (v14 or higher)
+- Node.js v14.21.1 or higher (v18+ recommended)
 - npm or yarn
 
 ### Install and run
@@ -48,7 +48,8 @@ The database is created automatically the first time the server starts. To reloa
 Copy `.env.example` to `backend/.env` if you want to customize settings:
 
 ```bash
-cp .env.example backend/.env
+cp .env.example backend/.env      # macOS / Linux
+Copy-Item .env.example backend\.env   # Windows PowerShell
 ```
 
 | Variable             | Description                                          |
@@ -72,23 +73,36 @@ cp .env.example backend/.env
 ```
 ├── index.html               # Storefront page
 ├── style.css                # Storefront styles
-├── main.js                  # Storefront logic (API calls, cart, auth, nav)
+├── main.js                  # Storefront logic (API calls, cart, auth, nav, Swiper slider)
 ├── admin.html               # Admin dashboard page
 ├── admin.css                # Admin dashboard styles
-├── admin.js                 # Admin logic (list/update orders)
-├── products.json            # Seed product data
+├── admin.js                 # Admin logic (order stats, list/update orders)
+├── products.json            # Seed product data (8 products)
 ├── render.yaml              # Render.com deployment config
 ├── .env.example             # Example environment variables
 ├── .gitignore
 ├── images/                  # Static images
 └── backend/
-    ├── server.js            # Express entry point
-    ├── db.js                # SQLite/Turso setup + table creation + auto-seed
-    ├── seed.js              # Re-seed products
-    ├── routes/              # API routes (auth, products, cart, orders)
-    ├── controllers/         # Business logic
+    ├── server.js            # Express entry point (API routes, static files, pages)
+    ├── db.js                # SQLite/Turso setup + schema + auto-seed
+    ├── seed.js              # Wipe and re-seed products from products.json
+    ├── middleware/
+    │   └── authMiddleware.js  # JWT Bearer-token verification
+    ├── routes/              # Express routers
+    │   ├── products.js      # GET /api/products
+    │   ├── auth.js          # POST /api/auth/signup, /login
+    │   ├── cart.js          # Cart endpoints (auth required)
+    │   └── orders.js        # Order endpoints (auth required + admin)
+    ├── controllers/         # Request handlers
+    │   ├── productController.js
+    │   ├── authController.js
+    │   ├── cartController.js
+    │   └── orderController.js
     ├── models/              # Database operations
-    ├── middleware/          # JWT auth verification
+    │   ├── User.js
+    │   ├── Product.js
+    │   ├── Cart.js
+    │   └── Order.js
     ├── .env                 # Local environment config (not committed)
     └── data/                # Local SQLite database (auto-created)
 ```
@@ -104,6 +118,8 @@ cp .env.example backend/.env
 ## Database
 
 Foodie uses SQLite locally or Turso in the cloud. When `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` are set, Turso is used; otherwise a local database is created at `backend/data/fooddelivery.db`. Products are auto-seeded from `products.json` if the table is empty.
+
+Note: price is stored as a `$`-prefixed string (e.g. `"$9.67"`); all controllers parse it with `parseFloat` when computing totals.
 
 ### Database Tables
 - **users** — User accounts (id, name, email, hashed password, createdAt)
@@ -138,22 +154,24 @@ Foodie uses SQLite locally or Turso in the cloud. When `TURSO_DATABASE_URL` and 
 | POST   | `/api/auth/signup` | No   | Register `{name, email, password}` |
 | POST   | `/api/auth/login`  | No   | Login `{email, password}`          |
 
+Responses return `{ token, user }`. Tokens are JWT signed with `JWT_SECRET` and expire after 7 days.
+
 ### Cart (auth required)
 
 | Method | Endpoint            | Auth | Description              |
 | ------ | ------------------- | ---- | ------------------------ |
-| GET    | `/api/cart`         | Yes  | Get user's cart          |
-| POST   | `/api/cart`         | Yes  | Add/update item `{productId, quantity}` |
+| GET    | `/api/cart`         | Yes  | Get user's cart `{ items }` |
+| POST   | `/api/cart`         | Yes  | Adjust quantity `{productId, quantity}`; `quantity` is a delta (+1 / -1); a result of 0 removes the item |
 | DELETE | `/api/cart/:itemId` | Yes  | Remove cart item         |
 
 ### Orders
 
 | Method | Endpoint                 | Auth | Description                     |
 | ------ | ------------------------ | ---- | ------------------------------- |
-| POST   | `/api/orders`            | Yes  | Create a new order              |
+| POST   | `/api/orders`            | Yes  | Create a new order (empties the cart) |
 | GET    | `/api/orders`            | Yes  | Get user's order history        |
-| GET    | `/api/orders/all`        | No*  | List all orders (admin)         |
-| PATCH  | `/api/orders/:id/status` | No*  | Update order status (admin only) |
+| GET    | `/api/orders/all`        | No*  | List all orders with user info (admin) |
+| PATCH  | `/api/orders/:id/status` | No*  | Update order status (admin only); valid statuses: `pending`, `completed`, `cancelled` |
 
 *Order list/update routes bypass JWT in this version. Add admin checks in `backend/routes/orders.js` before exposing them publicly in production.
 
@@ -163,7 +181,8 @@ The project includes `render.yaml` for easy deployment to Render.com. Set the `J
 
 ## Customization
 
-- **Add Products**: Edit `products.json` and run `npm run seed`
+- **Add Products**: Edit `products.json` and run `npm run seed` (wipes existing products and re-inserts)
 - **Modify Styles**: Edit `style.css` (storefront) or `admin.css` (dashboard) for branding
 - **Extend Features**: Add new API routes in `backend/routes/` and controllers in `backend/controllers/`
 - **Change Database**: Set Turso variables in `backend/.env` or use local SQLite via `backend/db.js`
+- **Admin Authentication**: `/api/orders/all` and the status update route have no auth yet; secure them with an admin check before deploying publicly
