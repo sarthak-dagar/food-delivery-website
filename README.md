@@ -159,7 +159,7 @@ Responses return `{ token, user }`. Tokens are JWT signed with `JWT_SECRET` and 
 ### Cart (auth required)
 
 | Method | Endpoint            | Auth | Description              |
-| ------ | ------------------- | ---- | ------------------------ |
+| ------ | ------------------- | ---- | ------------------------ |      
 | GET    | `/api/cart`         | Yes  | Get user's cart `{ items }` |
 | POST   | `/api/cart`         | Yes  | Adjust quantity `{productId, quantity}`; `quantity` is a delta (+1 / -1); a result of 0 removes the item |
 | DELETE | `/api/cart/:itemId` | Yes  | Remove cart item         |
