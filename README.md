@@ -156,7 +156,7 @@ Note: price is stored as a `$`-prefixed string (e.g. `"$9.67"`); all controllers
 
 Responses return `{ token, user }`. Tokens are JWT signed with `JWT_SECRET` and expire after 7 days.
 
-### Cart (auth required)
+### Cart (auth required)     
 
 | Method | Endpoint            | Auth | Description              |
 | ------ | ------------------- | ---- | ------------------------ |      
